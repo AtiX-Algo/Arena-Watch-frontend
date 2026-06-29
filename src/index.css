@@ -1,0 +1,12 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+ :root {
+  --color-accent-green: #22c55e;
+  --color-dark-base: #09090b; /* zinc-950 */
+}
+
+body {
+  background-color: var(--color-dark-base);
+  color: white;
+}
