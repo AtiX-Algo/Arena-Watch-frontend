@@ -7,7 +7,7 @@ export default function DataSeeder() {
   const seedDatabase = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/api/channels/seed', {
+      const response = await fetch('https://arena-watch-backend-1.onrender.com/api/channels/seed', {
         method: 'POST',
       });
       

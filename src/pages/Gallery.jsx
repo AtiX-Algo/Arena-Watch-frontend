@@ -35,7 +35,7 @@ export default function Gallery() {
 
   const fetchCards = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/gallery');
+      const res = await axios.get('https://arena-watch-backend-1.onrender.com/api/gallery');
       setCards(res.data);
     } catch (err) {
       console.error('Failed to fetch gallery:', err);
@@ -70,7 +70,7 @@ export default function Gallery() {
     e.stopPropagation(); 
     if (window.confirm("Delete this card permanently?")) {
       try {
-        await axios.delete(`http://localhost:5000/api/gallery/${id}`);
+        await axios.delete(`https://arena-watch-backend-1.onrender.com/api/gallery/${id}`);
         setCards(cards.filter(c => c._id !== id));
       } catch (err) {
         console.error('Failed to delete:', err);
@@ -78,15 +78,17 @@ export default function Gallery() {
     }
   };
 
-  const handleToggleFeature = async (e, id) => {
-    e.stopPropagation();
-    try {
-      const res = await axios.patch(`http://localhost:5000/api/gallery/${id}/feature`);
-      setCards(cards.map(c => c._id === id ? res.data : c));
-    } catch (err) {
-      console.error('Failed to toggle feature:', err);
-    }
-  };
+const handleToggleFeature = async (e, id) => {
+  e.stopPropagation(); 
+  try {
+    // Changed .patch to .put 👇
+    const res = await axios.put(`https://arena-watch-backend-1.onrender.com/api/gallery/${id}/feature`);
+    setCards(cards.map(c => c._id === id ? res.data : c));
+  } catch (err) {
+    console.error('Failed to toggle feature:', err);
+    alert(`Backend Error: ${err.response?.data?.message || err.message}`);
+  }
+};
 
   const openAddModal = () => {
     setIsEditMode(false);
@@ -130,11 +132,11 @@ export default function Gallery() {
       const payload = { ...formData, imageUrl: finalImageUrl };
       
       if (isEditMode) {
-        const res = await axios.put(`http://localhost:5000/api/gallery/${editingId}`, payload);
+        const res = await axios.put(`https://arena-watch-backend-1.onrender.com/api/gallery/${editingId}`, payload);
         // Update UI for Edit
         setCards(cards.map(c => c._id === editingId ? res.data : c));
       } else {
-        const res = await axios.post('http://localhost:5000/api/gallery', payload);
+        const res = await axios.post('https://arena-watch-backend-1.onrender.com/api/gallery', payload);
         // Update UI for Add
         setCards([res.data, ...cards]); 
       }
@@ -232,24 +234,34 @@ export default function Gallery() {
               <div className="absolute top-0 -left-[150%] w-[150%] h-full z-20 transform -skew-x-12 bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out pointer-events-none" />
 
               {/* Admin Controls Overlay */}
+              {/* Admin Controls Overlay */}
               {isAdmin && (
-                <div className="absolute top-3 right-3 z-30 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute top-3 right-3 z-30 flex gap-2 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity">
                   <button 
-                    onClick={(e) => handleToggleFeature(e, card._id)} 
+                    onClick={(e) => {
+                      e.stopPropagation(); // Double-layer protection from parent click
+                      handleToggleFeature(e, card._id);
+                    }} 
                     title={card.isFeatured ? "Unfeature" : "Feature on Home"}
-                    className={`p-2 bg-black/80 rounded-lg backdrop-blur-md border border-gray-700 transition-colors ${card.isFeatured ? 'text-yellow-400 hover:text-white' : 'text-white hover:text-yellow-400'}`}
+                    className={`p-2 bg-black/80 rounded-lg backdrop-blur-md border border-gray-700 transition-colors pointer-events-auto ${card.isFeatured ? 'text-yellow-400 hover:text-white' : 'text-white hover:text-yellow-400'}`}
                   >
                     <Star className={`w-4 h-4 ${card.isFeatured ? 'fill-current' : ''}`} />
                   </button>
                   <button 
-                    onClick={(e) => openEditModal(e, card)} 
-                    className="p-2 bg-black/80 hover:bg-cyan-600 text-white rounded-lg backdrop-blur-md border border-gray-700 transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openEditModal(e, card);
+                    }} 
+                    className="p-2 bg-black/80 hover:bg-cyan-600 text-white rounded-lg backdrop-blur-md border border-gray-700 transition-colors pointer-events-auto"
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>
                   <button 
-                    onClick={(e) => handleDelete(e, card._id)} 
-                    className="p-2 bg-black/80 hover:bg-red-500 text-white rounded-lg backdrop-blur-md border border-gray-700 transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(e, card._id);
+                    }} 
+                    className="p-2 bg-black/80 hover:bg-red-500 text-white rounded-lg backdrop-blur-md border border-gray-700 transition-colors pointer-events-auto"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>

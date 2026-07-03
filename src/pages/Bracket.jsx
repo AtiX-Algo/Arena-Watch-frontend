@@ -200,7 +200,7 @@ export default function KnockoutBracket() {
   useEffect(() => {
     const fetchLiveBracketData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/matches');
+        const response = await fetch('https://arena-watch-backend-1.onrender.com/api/matches');
         if (response.ok) {
           const data = await response.json();
           setLiveMatches(data);

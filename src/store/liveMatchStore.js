@@ -25,7 +25,7 @@ const useLiveMatchStore = create((set) => ({
 
 export default useLiveMatchStore;
 
-const BACKEND_URL = import.meta.env?.VITE_API_BASE_URL || 'http://localhost:5000';
+const BACKEND_URL = import.meta.env?.VITE_API_BASE_URL || 'https://arena-watch-backend-1.onrender.com';
 
 let socket = null;
 

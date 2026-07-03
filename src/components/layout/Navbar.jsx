@@ -14,7 +14,7 @@ export default function Navbar() {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const firebaseUser = result.user;
-      const res = await axios.post('http://localhost:5000/api/auth/sync', {
+      const res = await axios.post('https://arena-watch-backend-1.onrender.com/api/auth/sync', {
         firebaseUid: firebaseUser.uid,
         email: firebaseUser.email,
         name: firebaseUser.displayName,

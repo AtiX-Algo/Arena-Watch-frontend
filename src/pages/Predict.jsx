@@ -30,10 +30,10 @@ export default function Predict() {
 
   const fetchStatsAndLeaderboard = async () => {
     try {
-      const statsRes = await axios.get('http://localhost:5000/api/predictions/stats');
+      const statsRes = await axios.get('https://arena-watch-backend-1.onrender.com/api/predictions/stats');
       setStats({ tournamentStats: statsRes.data.tournamentStats || [] });
       
-      const leaderRes = await axios.get('http://localhost:5000/api/predictions/leaderboard');
+      const leaderRes = await axios.get('https://arena-watch-backend-1.onrender.com/api/predictions/leaderboard');
       setLeaderboard(leaderRes.data || []);
     } catch (err) {
       console.error("Failed to fetch real-time analytics or scores", err);
@@ -44,7 +44,7 @@ export default function Predict() {
   // NEW: Pulls previously saved entries from database to survive page refreshes
   const fetchUserSavedPredictions = async (userId) => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/predictions/user/${userId}`);
+      const res = await axios.get(`https://arena-watch-backend-1.onrender.com/api/predictions/user/${userId}`);
       const savedList = res.data || [];
       
       const structuredMatches = {};
@@ -70,7 +70,7 @@ export default function Predict() {
     if (!tournamentWinner.trim()) return alert("Please type a country name.");
 
     try {
-      await axios.post('http://localhost:5000/api/predictions', {
+      await axios.post('https://arena-watch-backend-1.onrender.com/api/predictions', {
         userId: user.firebaseUid,
         userName: user.name,
         type: 'tournament',
@@ -108,7 +108,7 @@ export default function Predict() {
     }
 
     try {
-      await axios.post('http://localhost:5000/api/predictions', {
+      await axios.post('https://arena-watch-backend-1.onrender.com/api/predictions', {
         userId: user.firebaseUid,
         userName: user.name,
         type: 'match_score',

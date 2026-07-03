@@ -252,7 +252,7 @@ export default function DreamXI() {
 
   const fetchCommunityStats = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/dreamxi/stats');
+      const res = await axios.get('https://arena-watch-backend-1.onrender.com/api/dreamxi/stats');
       setCommunityStats(res.data || []);
     } catch (err) {
       console.error(err);
@@ -261,7 +261,7 @@ export default function DreamXI() {
 
   const fetchUserSavedTeam = async (userId) => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/dreamxi/user/${userId}`);
+      const res = await axios.get(`https://arena-watch-backend-1.onrender.com/api/dreamxi/user/${userId}`);
       if (res.data && res.data.players) {
         setFormation(res.data.formation || '4-3-3');
         setSquad(res.data.players);
@@ -273,7 +273,7 @@ export default function DreamXI() {
 
   const fetchPlayers = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/dreamxi/players/${selectedCountry}`);
+      const res = await axios.get(`https://arena-watch-backend-1.onrender.com/api/dreamxi/players/${selectedCountry}`);
       setAvailablePlayers(res.data || []);
     } catch (err) {
       console.error(err);
@@ -298,7 +298,7 @@ export default function DreamXI() {
     if (squad.includes(null)) return alert('Please fill all 11 positions before saving!');
 
     try {
-      await axios.post('http://localhost:5000/api/dreamxi/save', {
+      await axios.post('https://arena-watch-backend-1.onrender.com/api/dreamxi/save', {
         userId: user.firebaseUid,
         userName: user.name,
         formation,

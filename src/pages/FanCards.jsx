@@ -20,7 +20,7 @@ export default function FanCards() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/fancards');
+        const res = await axios.get('https://arena-watch-backend-1.onrender.com/api/fancards');
         setCards(res.data);
       } catch (err) {
         console.error("Error fetching fan cards", err);
@@ -52,7 +52,7 @@ export default function FanCards() {
     }));
 
     try {
-      await axios.patch(`http://localhost:5000/api/fancards/${cardId}/like`, { 
+      await axios.patch(`https://arena-watch-backend-1.onrender.com/api/fancards/${cardId}/like`, { 
         userId: user.firebaseUid 
       });
     } catch (err) {
@@ -85,7 +85,7 @@ export default function FanCards() {
         uploaderName: user.name
       };
       
-      const res = await axios.post('http://localhost:5000/api/fancards', payload);
+      const res = await axios.post('https://arena-watch-backend-1.onrender.com/api/fancards', payload);
       
       setCards([res.data, ...cards]);
       setIsUploadModalOpen(false);
@@ -102,7 +102,7 @@ export default function FanCards() {
     if (!window.confirm("Are you sure you want to delete this fan card?")) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/fancards/${cardId}`);
+      await axios.delete(`https://arena-watch-backend-1.onrender.com/api/fancards/${cardId}`);
       // Remove from UI state instantly
       setCards(cards.filter(card => card._id !== cardId));
     } catch (err) {
@@ -123,7 +123,7 @@ export default function FanCards() {
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.patch(`http://localhost:5000/api/fancards/${editingCard._id}`, {
+      const res = await axios.patch(`https://arena-watch-backend-1.onrender.com/api/fancards/${editingCard._id}`, {
         title: editingCard.title,
         aiPrompt: editingCard.aiPrompt
       });

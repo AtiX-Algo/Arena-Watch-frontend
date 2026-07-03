@@ -24,23 +24,36 @@ export default function Home() {
   const [latestNews, setLatestNews] = useState([]); // Awaiting News API
 
   // Fetch real data on load
+// Fetch real data on load
   useEffect(() => {
     const fetchHomeData = async () => {
+      // 1. Fetch Gallery Independently
       try {
-        const [galleryRes, fanCardsRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/gallery/featured'), // Fetches only cards marked 'isFeatured'
-          axios.get('http://localhost:5000/api/fancards')
-        ]);
+        // Fetch the main gallery endpoint instead of /featured
+        const galleryRes = await axios.get('https://arena-watch-backend-1.onrender.com/api/gallery');
+        
+        // Filter the featured cards locally on the frontend
+        const featured = galleryRes.data.filter(card => card.isFeatured);
         
         // Take up to 3 featured official cards
-        setFeaturedGallery(galleryRes.data.slice(0, 3));
+        setFeaturedGallery(featured.slice(0, 3));
+      } catch (err) {
+        console.error("Error fetching gallery for home:", err);
+      }
+
+      // 2. Fetch Fan Cards Independently
+      try {
+        const fanCardsRes = await axios.get('https://arena-watch-backend-1.onrender.com/api/fancards');
         
         // Sort fan cards by highest likes, take top 2 for "Trending"
-        const sortedFans = fanCardsRes.data.sort((a, b) => b.likes.length - a.likes.length).slice(0, 2);
+        // Added fallback `|| 0` in case likes array is undefined
+        const sortedFans = fanCardsRes.data
+          .sort((a, b) => (b.likes?.length || 0) - (a.likes?.length || 0))
+          .slice(0, 2);
+          
         setTrendingFanCards(sortedFans);
-
       } catch (err) {
-        console.error("Error fetching home data:", err);
+        console.error("Error fetching fan cards for home:", err);
       }
     };
     

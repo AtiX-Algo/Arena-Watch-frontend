@@ -9,7 +9,7 @@
 //   useEffect(() => {
 //     const fetchChannels = async () => {
 //       try {
-//         const response = await fetch('http://localhost:5000/api/channels');
+//         const response = await fetch('https://arena-watch-backend-1.onrender.com/api/channels');
 //         const data = await response.json();
 //         setChannels(data);
 //       } catch (error) {
